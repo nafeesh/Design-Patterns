@@ -1,25 +1,17 @@
 
-class SingletonMeta(type):
-    _instances = {}
+class ShapeContext:
+    def __init__(self, shape_type, x, y):
+        self.shape_type = shape_type
+        self.x = x
+        self.y = y
 
-    def __init__(cls, name, bases, dct):
-        super(SingletonMeta, cls).__init__(name, bases, dct)
-        cls._instances[cls] = super(SingletonMeta, cls).__call__()
-
-    def __call__(cls, *args, **kwargs): # NOTE: eager initialization
-        return cls._instances[cls]
-
-class EagerSingleton(metaclass=SingletonMeta):
-    def do_something(self):
-        pass
-
-
-
-def main():
-    s1 = EagerSingleton()
-    s2 = EagerSingleton()
-    print(s1 is s2)
+    @classmethod
+    def create_shape(cls, context):
+        if context.shape_type == ShapeType.CIRCLE:
+            return Circle(context.x, context.y)
+        elif context.shape_type == ShapeType.RECTANGLE:
+            return Rectangle(context.x, context.y)
 
 
 if __name__ == "__main__":
-    main()
+    
